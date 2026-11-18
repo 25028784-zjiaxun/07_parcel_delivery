@@ -1,0 +1,35 @@
+name: Parcel delivery tests
+
+# Use 07_parcel_delivery as the repository root.
+on:
+  push:
+    # Enhancement: run for changes that can affect the tests.
+    paths:
+      - "src/**"
+      - "tests/**"
+      - "requirements.txt"
+      - ".github/workflows/tests.yml"
+  # Allows a manual demonstration from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the project files
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.14.4"
+
+      - name: Install test dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run unit tests and check coverage
+        run: python -m pytest tests -v --tb=short --cov=src --cov-report=term-missing
