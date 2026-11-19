@@ -104,7 +104,4 @@ I added a `paths` filter so a push triggers the tests when it changes:
 
 This avoids unnecessary test runs for changes only to unrelated files, such as this README, while still testing changes to the code, tests, dependencies or workflow. The workflow also supports manual runs through `workflow_dispatch`.
 
-The relevant-change trigger has run successfully. The README-only skip still needs to be checked. To demonstrate the filter:
-
-1. Make a small comment change in a test file, commit it and push. A new workflow run should appear.
-2. Change only README.md, commit it and push. No new run of this workflow should appear for that commit.
+I verified the `paths` filter with two pushes to `main`. Commit `492d4c5` changed `.github/workflows/tests.yml` and triggered [the test run](https://github.com/25028784-zjiaxun/07_parcel_delivery/actions/runs/44217499861). The next [commit, `1b2b3b7`](https://github.com/25028784-zjiaxun/07_parcel_delivery/commit/1b2b3b7c1fb53814d35748ba2000b1052321e9c7), changed only `README.md`. The GitHub Actions API reported zero runs of this workflow for that commit SHA, confirming that the filter skipped the README-only push.
